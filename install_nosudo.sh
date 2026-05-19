@@ -123,10 +123,10 @@ for plugin in "${!ZSH_PLUGINS[@]}"; do
   fi
 done
 
-# --- Powerlevel10k ---
-if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
-    "$ZSH_CUSTOM/themes/powerlevel10k"
+# --- Starship ---
+echo "==> Installing Starship..."
+if ! command -v starship &>/dev/null; then
+  curl -sS https://starship.rs/install.sh | sh -s -- --yes --bin-dir ~/.local/bin
 fi
 
 # --- Tmux Plugin Manager ---
@@ -154,6 +154,20 @@ for file in "${DOTFILES[@]}"; do
   fi
 done
 
+# Starship config
+mkdir -p "$HOME/.config"
+ln -sf "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
+echo "  Linked ~/.config/starship.toml -> $DOTFILES_DIR/starship.toml"
+
+# --- Catppuccin theme files ---
+echo "==> Installing Catppuccin theme files..."
+mkdir -p "$HOME/.config/glow"
+curl -fsSLo "$HOME/.config/glow/catppuccin-mocha.json" \
+  https://raw.githubusercontent.com/catppuccin/glamour/main/themes/catppuccin-mocha.json
+mkdir -p "$HOME/.config/btop/themes"
+curl -fsSLo "$HOME/.config/btop/themes/catppuccin_mocha.theme" \
+  https://raw.githubusercontent.com/catppuccin/btop/main/themes/catppuccin_mocha.theme
+
 # --- Ensure ~/.local/bin is in PATH (append to zshrc if missing) ---
 if ! grep -q '\.local/bin' "$HOME/.zshrc" 2>/dev/null; then
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc"
@@ -164,5 +178,7 @@ echo ""
 echo "==> Done! Next steps:"
 echo "  1. Start zsh:  exec zsh   (or open a new terminal)"
 echo "     (chsh skipped — no sudo. To make zsh default permanently, ask your admin.)"
-echo "  2. Run 'p10k configure' to set up your prompt"
-echo "  3. In tmux, press Ctrl-a + I to install tmux plugins"
+echo "  2. In GNOME Terminal: Preferences → select 'Catppuccin Mocha' profile → set as default"
+echo "     (run the catppuccin/gnome-terminal install script first if not done)"
+echo "  3. In vim, run :PlugInstall to install the Catppuccin theme"
+echo "  4. In tmux, press Ctrl-a + I to install tmux plugins"

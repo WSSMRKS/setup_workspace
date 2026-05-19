@@ -22,22 +22,28 @@ Open **Edit → Preferences → (your profile) → Command** and either:
 
 ### 3. Open a new terminal window
 
-Oh My Zsh should now load automatically. If it asks you to configure Powerlevel10k, follow the prompts — or run it manually any time:
+Oh My Zsh loads automatically. The Starship prompt starts immediately — no configuration wizard needed.
 
-```bash
-p10k configure
+### 4. Install vim plugins
+
+Open vim and run:
+
+```
+:PlugInstall
 ```
 
-### 4. Install tmux plugins
+This installs the Catppuccin Mocha theme. Close and reopen vim after it finishes.
 
-Open tmux, then press `Ctrl-a + I` (capital i). This downloads and installs the plugins defined in `.tmux.conf` (session persistence, yank, etc). Only needed once.
+### 5. Install tmux plugins
+
+Open tmux, then press `Ctrl-a + I` (capital i). This downloads and installs the plugins defined in `tmux.conf` (Catppuccin theme, session persistence, yank, etc). Only needed once.
 
 ### 5. Verify everything works
 
 | Check | Command |
 |-------|---------|
 | Correct shell | `echo $SHELL` → should show `/usr/bin/zsh` |
-| Oh My Zsh loaded | Prompt should show Powerlevel10k theme |
+| Starship loaded | Prompt should show git branch, language versions |
 | zoxide working | `cd` into a few dirs, then try `cd <partial>` |
 | glow installed | `glow CHEATSHEET.md` |
 
@@ -224,6 +230,20 @@ vim is modal: keys do different things depending on which mode you're in.
 | `Tab` | Autocomplete (press twice for menu) |
 | `→` (right arrow) | Accept autosuggestion |
 | `Ctrl-l` | Clear screen |
+
+### Job control (background / foreground)
+
+| Key / Command | What it does |
+|---------------|-------------|
+| `Ctrl+Z` | Suspend current foreground process |
+| `bg` | Resume suspended job in background |
+| `fg` | Bring most recent background job to foreground |
+| `fg %2` | Bring job #2 to foreground |
+| `jobs` | List all background/suspended jobs |
+| `cmd &` | Start command directly in background |
+| `kill %1` | Kill job #1 by job number |
+| `disown %1` | Detach job — survives terminal close |
+| `nohup cmd &` | Run immune to hangup signals (survives logout) |
 
 ### Navigation
 

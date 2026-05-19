@@ -62,10 +62,10 @@ for plugin in "${!ZSH_PLUGINS[@]}"; do
   fi
 done
 
-# --- Powerlevel10k ---
-if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
-    "$ZSH_CUSTOM/themes/powerlevel10k"
+# --- Starship ---
+echo "==> Installing Starship..."
+if ! command -v starship &>/dev/null; then
+  curl -sS https://starship.rs/install.sh | sh -s -- --yes --bin-dir ~/.local/bin
 fi
 
 # --- zoxide ---
@@ -79,6 +79,19 @@ echo "==> Installing TPM..."
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
   git clone --depth=1 https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
+
+# --- Catppuccin theme files ---
+echo "==> Installing Catppuccin theme files..."
+
+# glow
+mkdir -p "$HOME/.config/glow"
+curl -fsSLo "$HOME/.config/glow/catppuccin-mocha.json" \
+  https://raw.githubusercontent.com/catppuccin/glamour/main/themes/catppuccin-mocha.json
+
+# btop
+mkdir -p "$HOME/.config/btop/themes"
+curl -fsSLo "$HOME/.config/btop/themes/catppuccin_mocha.theme" \
+  https://raw.githubusercontent.com/catppuccin/btop/main/themes/catppuccin_mocha.theme
 
 # --- Symlink dotfiles ---
 echo "==> Symlinking dotfiles..."
@@ -97,6 +110,11 @@ for file in "${DOTFILES[@]}"; do
   fi
 done
 
+# Starship config
+mkdir -p "$HOME/.config"
+ln -sf "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
+echo "  Linked ~/.config/starship.toml -> $DOTFILES_DIR/starship.toml"
+
 # --- Set default shell ---
 if [ "$SHELL" != "$(which zsh)" ]; then
   echo "==> Setting zsh as default shell..."
@@ -106,5 +124,7 @@ fi
 echo ""
 echo "==> Done! Next steps:"
 echo "  1. Open a new terminal or run: exec zsh"
-echo "  2. Run 'p10k configure' to set up your prompt"
-echo "  3. In tmux, press Ctrl-a + I to install tmux plugins"
+echo "  2. In GNOME Terminal: Preferences → select 'Catppuccin Mocha' profile"
+echo "     (run the catppuccin/gnome-terminal install script first if not done)"
+echo "  3. In vim, run :PlugInstall to install the Catppuccin theme"
+echo "  4. In tmux, press Ctrl-a + I to install tmux plugins"

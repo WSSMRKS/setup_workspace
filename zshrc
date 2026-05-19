@@ -1,11 +1,6 @@
-# Powerlevel10k instant prompt (keep at very top)
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # --- Oh My Zsh ---
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME=""
 
 plugins=(
   git
@@ -37,6 +32,9 @@ export FZF_DEFAULT_OPTS='
   --layout=reverse
   --border
   --info=inline
+  --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8
+  --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc
+  --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8
 '
 
 # --- zoxide (replaces cd with frecency matching) ---
@@ -107,8 +105,8 @@ psg() { ps aux | grep -v grep | grep -i "$1"; }
 # quick HTTP server
 serve() { python3 -m http.server "${1:-8000}"; }
 
-# --- Powerlevel10k config ---
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+# --- Starship prompt ---
+eval "$(starship init zsh)"
 
 # --- Local overrides (machine-specific, not committed) ---
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
