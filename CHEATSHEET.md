@@ -69,13 +69,14 @@ You can have multiple sessions running at the same time. Detaching from a sessio
 | `tk <name>` | Kill session (shell alias) |
 | `prefix + d` | Detach (leave session running in background) |
 | `prefix + $` | Rename current session |
-| `prefix + s` | Switch between sessions interactively |
+| `prefix + s` | List sessions + windows interactively (switch between sessions) |
 
 ### Windows (tabs)
 
 | Key | What it does |
 |-----|-------------|
 | `prefix + c` | New window (opens in current directory) |
+| `prefix + w` | List all windows interactively (navigate + switch) |
 | `prefix + n` | Next window |
 | `prefix + p` | Previous window |
 | `prefix + <number>` | Jump to window by number |
