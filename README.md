@@ -4,14 +4,28 @@ Repeatable dev environment: Zsh + Oh My Zsh + Starship + Vim + tmux. Unified Cat
 
 ## Quick start
 
+### Option 1: Full setup (with sudo)
+
 ```bash
 git clone git@github.com:WSSMRKS/setup_workspace.git ~/setup_workspace
 cd ~/setup_workspace
-chmod +x install.sh
-./install.sh
+chmod +x install.sh install_nosudo.sh
+./install.sh      # Installs system packages (requires sudo)
+./install_nosudo.sh  # Installs user-level tools
 ```
 
-Then follow the first time setup in `CHEATSHEET.md` — or view it directly:
+### Option 2: No sudo (e.g., work PC)
+
+If system packages (`tmux`, `vim`, `zsh`, `git`) are already installed:
+
+```bash
+git clone git@github.com:WSSMRKS/setup_workspace.git ~/setup_workspace
+cd ~/setup_workspace
+chmod +x install_nosudo.sh
+./install_nosudo.sh
+```
+
+Then follow the first time setup in `CHEATSHEET.md`:
 
 ```bash
 glow -p CHEATSHEET.md
@@ -26,14 +40,25 @@ Short version:
 
 ## What's included
 
+### Install scripts
+
+| Script | What it does | Requires sudo |
+|--------|-------------|---------------|
+| `install.sh` | System packages (tmux, vim, zsh, git), Oh My Zsh plugins, Starship, TPM, theme files | Yes |
+| `install_nosudo.sh` | User-level tools (ripgrep, fd, fzf, glow, zoxide), symlinks dotfiles, spell files | No |
+
+**Note:** If you don't have sudo, make sure `tmux`, `vim`, `zsh`, and `git` are already installed on your system before running `install_nosudo.sh`. Ask your admin if they're not available.
+
+### Config files
+
 | File | What it does |
 |------|-------------|
-| `install.sh` | Installs packages, Oh My Zsh, Starship, zoxide, TPM, glow, theme files, symlinks dotfiles |
 | `zshrc` | Starship prompt, autosuggestions, syntax highlighting, fzf, zoxide, aliases |
 | `starship.toml` | Starship config with Catppuccin Mocha palette |
 | `tmux.conf` | Ctrl-a prefix, vim navigation, resurrect + continuum (session persistence) |
-| `vimrc` | vim-plug + Catppuccin Mocha, sane defaults |
+| `vimrc` | vim-plug + Catppuccin Mocha, sane defaults, spell check |
 | `CHEATSHEET.md` | Key bindings and aliases reference — view with `glow -p CHEATSHEET.md` |
+| `cheatsheets/` | Individual cheatsheets for tmux, vim, zsh, and tools |
 
 ## Theme
 

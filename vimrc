@@ -43,6 +43,9 @@ set undofile
 set undodir=~/.vim/undodir
 silent! call mkdir(expand('~/.vim/undodir'), 'p')
 
+" Spell files directory
+silent! call mkdir(expand('~/.vim/spell'), 'p')
+
 " ============================================
 " Leader
 " ============================================

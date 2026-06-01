@@ -174,6 +174,26 @@ if ! grep -q '\.local/bin' "$HOME/.zshrc" 2>/dev/null; then
   echo "  Added ~/.local/bin to PATH in .zshrc"
 fi
 
+# --- Vim spell files ---
+echo "==> Installing Vim spell files..."
+mkdir -p "$HOME/.vim/spell"
+SPELL_URL="https://ftp.nluug.nl/vim/runtime/spell"
+
+for lang in en de; do
+  for ext in spl sug; do
+    file="${lang}.utf-8.${ext}"
+    if [ ! -f "$HOME/.vim/spell/$file" ]; then
+      if curl -fsSLo "$HOME/.vim/spell/$file" "$SPELL_URL/$file" 2>/dev/null; then
+        echo "  Downloaded $file"
+      else
+        echo "  Failed to download $file (optional, skipping)"
+      fi
+    else
+      echo "  $file already exists, skipping"
+    fi
+  done
+done
+
 echo ""
 echo "==> Done! Next steps:"
 echo "  1. Start zsh:  exec zsh   (or open a new terminal)"
