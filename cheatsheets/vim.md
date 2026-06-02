@@ -94,3 +94,27 @@ vim is modal: keys do different things depending on which mode you're in.
 | `<leader>e` | Toggle file explorer sidebar |
 | `Enter` | Open file / expand folder |
 | `-` | Go up a directory |
+
+## Language Server (LSP) — coc.nvim
+
+Requires coc.nvim plugin and language servers installed. For C/C++, install with `:CocInstall coc-clangd`.
+
+| Key | What it does |
+|-----|-------------|
+| `gd` | Go to definition |
+| `gf` | Find references |
+| `K` | Show function signature / hover documentation |
+| `<leader>o` | Show outline (functions, variables) |
+| `<leader>cn` | Next diagnostic |
+| `<leader>cp` | Previous diagnostic |
+| `<leader>co` | Open diagnostics list |
+| `<leader>cc` | Close diagnostics list |
+
+## Example: C function lookup
+
+```c
+print_error("hello");  // Cursor on 'print_error'
+K                      // Shows: print_error(char *str) — print error message
+gd                     // Jump to definition in another file
+Ctrl-t                 // Jump back to original location
+```

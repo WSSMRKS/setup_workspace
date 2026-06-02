@@ -1,6 +1,6 @@
 # setup_workspace
 
-Repeatable dev environment: Zsh + Oh My Zsh + Starship + Vim + tmux. Unified Catppuccin Mocha theme across all tools.
+Repeatable dev environment: **Zsh + Oh My Zsh + Starship + Vim (with LSP) + tmux + Node.js**. Unified Catppuccin Mocha theme across all tools. Vim includes coc.nvim for language server support (go-to-definition, hover docs, diagnostics).
 
 ## Quick start
 
@@ -34,9 +34,10 @@ glow -p CHEATSHEET.md
 Short version:
 1. `chsh -s $(which zsh)` — set zsh as default shell
 2. In GNOME Terminal: **Preferences → select Catppuccin Mocha profile → set as default**
-3. Open a new terminal — Starship prompt loads automatically
-4. Open vim and run `:PlugInstall` to install the Catppuccin theme
-5. Open tmux and press `Ctrl-a + I` to install plugins
+3. Open a new terminal — Starship prompt loads automatically and nvm initializes
+4. Open vim and run `:PlugInstall` to install plugins (Catppuccin + coc.nvim)
+5. In vim, run `:CocInstall coc-clangd` for C/C++ language server support
+6. Open tmux and press `Ctrl-a + I` to install plugins
 
 ## What's included
 
@@ -45,7 +46,7 @@ Short version:
 | Script | What it does | Requires sudo |
 |--------|-------------|---------------|
 | `install.sh` | System packages (tmux, vim, zsh, git), Oh My Zsh plugins, Starship, TPM, theme files | Yes |
-| `install_nosudo.sh` | User-level tools (ripgrep, fd, fzf, glow, zoxide), symlinks dotfiles, spell files | No |
+| `install_nosudo.sh` | User-level tools (ripgrep, fd, fzf, glow, zoxide, nvm + Node.js v24), symlinks dotfiles, spell files, vim plugins | No |
 
 **Note:** If you don't have sudo, make sure `tmux`, `vim`, `zsh`, and `git` are already installed on your system before running `install_nosudo.sh`. Ask your admin if they're not available.
 
@@ -53,12 +54,33 @@ Short version:
 
 | File | What it does |
 |------|-------------|
-| `zshrc` | Starship prompt, autosuggestions, syntax highlighting, fzf, zoxide, aliases |
+| `zshrc` | Starship prompt, autosuggestions, syntax highlighting, fzf, zoxide, nvm, aliases |
 | `starship.toml` | Starship config with Catppuccin Mocha palette |
 | `tmux.conf` | Ctrl-a prefix, vim navigation, resurrect + continuum (session persistence) |
-| `vimrc` | vim-plug + Catppuccin Mocha, sane defaults, spell check |
+| `vimrc` | vim-plug (Catppuccin Mocha + coc.nvim), LSP navigation (`gd`, `K`, `gf`), sane defaults, spell check |
 | `CHEATSHEET.md` | Key bindings and aliases reference — view with `glow -p CHEATSHEET.md` |
-| `cheatsheets/` | Individual cheatsheets for tmux, vim, zsh, and tools |
+| `cheatsheets/` | Individual cheatsheets for tmux, vim, zsh, and tools (vim.md includes LSP shortcuts) |
+
+## Vim Language Server (LSP) Setup
+
+Vim includes **coc.nvim** with LSP support for code navigation and diagnostics.
+
+### Installation
+
+```vim
+:PlugInstall           " Install coc.nvim plugin
+:CocInstall coc-clangd " Install C/C++ language server (or swap for coc-python, coc-tsserver, etc.)
+```
+
+### Usage
+
+- `K` over a function → Show signature + docs
+- `gd` → Jump to definition
+- `gf` → Find references
+- `<leader>o` → Show functions/symbols outline
+- `<leader>cn` / `<leader>cp` → Next/previous error
+
+See `cheatsheets/vim.md` for full LSP shortcuts.
 
 ## Theme
 
@@ -99,6 +121,12 @@ All tools use **Catppuccin Mocha** for a unified color scheme.
 | `<leader>r` | Replace word under cursor |
 | `<leader>bn/bp/bd` | Next/prev/delete buffer |
 | `C-h/j/k/l` | Navigate splits |
+| **LSP (requires coc.nvim + language server)** | |
+| `gd` | Go to definition |
+| `gf` | Find references |
+| `K` | Show function signature / hover docs |
+| `<leader>o` | Show outline |
+| `<leader>cn/cp` | Next/prev diagnostic |
 
 ## Machine-specific overrides
 

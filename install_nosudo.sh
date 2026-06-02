@@ -99,6 +99,19 @@ else
   echo "==> zoxide already installed, skipping."
 fi
 
+# --- nvm (Node Version Manager) ---
+if [ ! -d "$HOME/.nvm" ]; then
+  echo "==> Installing nvm..."
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  nvm install 24
+  nvm alias default 24
+  echo "  Installed Node.js v24 LTS"
+else
+  echo "==> nvm already installed, skipping."
+fi
+
 # --- Oh My Zsh ---
 echo "==> Installing Oh My Zsh..."
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
@@ -200,5 +213,10 @@ echo "  1. Start zsh:  exec zsh   (or open a new terminal)"
 echo "     (chsh skipped — no sudo. To make zsh default permanently, ask your admin.)"
 echo "  2. In GNOME Terminal: Preferences → select 'Catppuccin Mocha' profile → set as default"
 echo "     (run the catppuccin/gnome-terminal install script first if not done)"
-echo "  3. In vim, run :PlugInstall to install the Catppuccin theme"
-echo "  4. In tmux, press Ctrl-a + I to install tmux plugins"
+echo "  3. In vim, run :PlugInstall to install plugins (Catppuccin + coc.nvim)"
+echo "  4. In vim, run :CocInstall coc-clangd for C/C++ support"
+echo "  5. In tmux, press Ctrl-a + I to install tmux plugins"
+echo ""
+echo "View cheatsheets:"
+echo "  glow -p CHEATSHEET.md     # Quick reference"
+echo "  glow -p cheatsheets/vim.md  # vim shortcuts + LSP commands"

@@ -39,7 +39,17 @@ Open vim and run:
 :PlugInstall
 ```
 
-This installs the Catppuccin Mocha theme. Close and reopen vim after it finishes.
+This installs the Catppuccin Mocha theme + coc.nvim (language server). Close and reopen vim after it finishes.
+
+### 4b. Install language servers for coc.nvim (optional but recommended)
+
+For C/C++ development:
+
+```vim
+:CocInstall coc-clangd
+```
+
+For other languages, use `:CocInstall coc-<language>` (e.g., `coc-python`, `coc-tsserver` for TypeScript).
 
 ### 5. Install tmux plugins
 
@@ -53,3 +63,5 @@ Open tmux, then press `Ctrl-a + I` (capital i). This downloads and installs the 
 | Starship loaded | Prompt should show git branch, language versions |
 | zoxide working | `cd` into a few dirs, then try `cd <partial>` |
 | glow installed | `glow CHEATSHEET.md` |
+| Node.js installed | `node --version` → should show v24.x or higher |
+| vim LSP ready | Open a C file, hover over a function with `K` (requires language server installed with `:CocInstall`) |

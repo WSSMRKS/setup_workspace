@@ -2,7 +2,9 @@
 " Plugins
 " ============================================
 call plug#begin('~/.vim/plugged')
+
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 call plug#end()
 
 silent! colorscheme catppuccin_mocha
@@ -54,6 +56,21 @@ let mapleader=" "
 " ============================================
 " Navigation
 " ============================================
+
+" Language server navigation
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gf <Plug>(coc-reference)
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+    if CocAction('hasProvider', 'hover')
+        call CocActionAsync('doHover')
+    else
+        call feedkeys('K', 'in')
+    endif
+endfunction
+
+nnoremap <leader>o :CocOutline<CR>
 
 " Window navigation (matches tmux)
 nnoremap <C-h> <C-w>h

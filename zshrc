@@ -37,11 +37,6 @@ export FZF_DEFAULT_OPTS='
   --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8
 '
 
-# --- zoxide (replaces cd with frecency matching) ---
-if command -v zoxide &>/dev/null; then
-  eval "$(zoxide init zsh --cmd cd)"
-fi
-
 # --- History ---
 HISTSIZE=50000
 SAVEHIST=50000
@@ -110,3 +105,12 @@ eval "$(starship init zsh)"
 
 # --- Local overrides (machine-specific, not committed) ---
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# --- zoxide (replaces cd with frecency matching) - MUST be at end ---
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi
