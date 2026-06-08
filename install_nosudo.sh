@@ -45,6 +45,16 @@ gh_latest() {
     | grep '"tag_name"' | sed 's/.*"tag_name": *"\([^"]*\)".*/\1/'
 }
 
+# --- Neovim ---
+if ! command -v nvim &>/dev/null; then
+  echo "==> Installing Neovim..."
+  VER="$(gh_latest neovim/neovim)"
+  URL="https://github.com/neovim/neovim/releases/download/${VER}/nvim-linux-x86_64.tar.gz"
+  install_bin_from_tar "$URL" "nvim"
+else
+  echo "==> Neovim already installed, skipping."
+fi
+
 # --- ripgrep ---
 if ! command -v rg &>/dev/null; then
   echo "==> Installing ripgrep..."
@@ -142,6 +152,15 @@ if ! command -v starship &>/dev/null; then
   curl -sS https://starship.rs/install.sh | sh -s -- --yes --bin-dir ~/.local/bin
 fi
 
+# --- vim-plug (for Neovim) ---
+echo "==> Installing vim-plug..."
+if [ ! -f "$HOME/.local/share/nvim/site/autoload/plug.vim" ]; then
+  curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+else
+  echo "  Already installed, skipping."
+fi
+
 # --- Tmux Plugin Manager ---
 echo "==> Installing TPM..."
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
@@ -152,7 +171,7 @@ fi
 
 # --- Symlink dotfiles ---
 echo "==> Symlinking dotfiles..."
-declare -a DOTFILES=(.zshrc .tmux.conf .vimrc)
+declare -a DOTFILES=(.zshrc .tmux.conf)
 
 for file in "${DOTFILES[@]}"; do
   src="$DOTFILES_DIR/${file#.}"
@@ -167,6 +186,11 @@ for file in "${DOTFILES[@]}"; do
   fi
 done
 
+# Neovim config
+mkdir -p "$HOME/.config/nvim"
+ln -sf "$DOTFILES_DIR/init.vim" "$HOME/.config/nvim/init.vim"
+echo "  Linked ~/.config/nvim/init.vim -> $DOTFILES_DIR/init.vim"
+
 # Starship config
 mkdir -p "$HOME/.config"
 ln -sf "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
@@ -180,6 +204,20 @@ curl -fsSLo "$HOME/.config/glow/catppuccin-mocha.json" \
 mkdir -p "$HOME/.config/btop/themes"
 curl -fsSLo "$HOME/.config/btop/themes/catppuccin_mocha.theme" \
   https://raw.githubusercontent.com/catppuccin/btop/main/themes/catppuccin_mocha.theme
+
+# --- GNOME Terminal: bind Ctrl+Alt+T ---
+if command -v gsettings &>/dev/null && command -v gnome-terminal &>/dev/null; then
+  echo "==> Binding Ctrl+Alt+T to gnome-terminal..."
+  gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '[]'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
+    "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ \
+    name 'Terminal'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ \
+    command '/usr/bin/gnome-terminal'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ \
+    binding '<Ctrl><Alt>t'
+fi
 
 # --- Ensure ~/.local/bin is in PATH (append to zshrc if missing) ---
 if ! grep -q '\.local/bin' "$HOME/.zshrc" 2>/dev/null; then

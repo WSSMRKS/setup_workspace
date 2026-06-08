@@ -1,6 +1,6 @@
 # setup_workspace
 
-Repeatable dev environment: **Zsh + Oh My Zsh + Starship + Vim (with LSP) + tmux + Node.js**. Unified Catppuccin Mocha theme across all tools. Vim includes coc.nvim for language server support (go-to-definition, hover docs, diagnostics).
+Repeatable dev environment: **Zsh + Oh My Zsh + Starship + Neovim (with LSP) + tmux + Node.js**. Unified Catppuccin Mocha theme across all tools. Neovim includes coc.nvim for language server support (go-to-definition, hover docs, diagnostics).
 
 ## Quick start
 
@@ -16,7 +16,7 @@ chmod +x install.sh install_nosudo.sh
 
 ### Option 2: No sudo (e.g., work PC)
 
-If system packages (`tmux`, `vim`, `zsh`, `git`) are already installed:
+If system packages (`tmux`, `neovim`, `zsh`, `git`) are already installed:
 
 ```bash
 git clone git@github.com:WSSMRKS/setup_workspace.git ~/setup_workspace
@@ -35,8 +35,8 @@ Short version:
 1. `chsh -s $(which zsh)` — set zsh as default shell
 2. In GNOME Terminal: **Preferences → select Catppuccin Mocha profile → set as default**
 3. Open a new terminal — Starship prompt loads automatically and nvm initializes
-4. Open vim and run `:PlugInstall` to install plugins (Catppuccin + coc.nvim)
-5. In vim, run `:CocInstall coc-clangd` for C/C++ language server support
+4. Open nvim — plugins auto-install on first launch (or run `:PlugInstall` manually)
+5. In nvim, run `:CocInstall coc-clangd` for C/C++ language server support
 6. Open tmux and press `Ctrl-a + I` to install plugins
 
 ## What's included
@@ -45,8 +45,8 @@ Short version:
 
 | Script | What it does | Requires sudo |
 |--------|-------------|---------------|
-| `install.sh` | System packages (tmux, vim, zsh, git), Oh My Zsh plugins, Starship, TPM, theme files | Yes |
-| `install_nosudo.sh` | User-level tools (ripgrep, fd, fzf, glow, zoxide, nvm + Node.js v24), symlinks dotfiles, spell files, vim plugins | No |
+| `install.sh` | System packages (tmux, neovim, zsh, git), Oh My Zsh plugins, Starship, TPM, theme files | Yes |
+| `install_nosudo.sh` | User-level tools (neovim, ripgrep, fd, fzf, glow, zoxide, nvm + Node.js v24), symlinks dotfiles, spell files, vim-plug | No |
 
 **Note:** If you don't have sudo, make sure `tmux`, `vim`, `zsh`, and `git` are already installed on your system before running `install_nosudo.sh`. Ask your admin if they're not available.
 
@@ -57,13 +57,13 @@ Short version:
 | `zshrc` | Starship prompt, autosuggestions, syntax highlighting, fzf, zoxide, nvm, aliases |
 | `starship.toml` | Starship config with Catppuccin Mocha palette |
 | `tmux.conf` | Ctrl-a prefix, vim navigation, resurrect + continuum (session persistence) |
-| `vimrc` | vim-plug (Catppuccin Mocha + coc.nvim), LSP navigation (`gd`, `K`, `gf`), sane defaults, spell check |
+| `init.vim` | vim-plug (Catppuccin Mocha + coc.nvim), LSP navigation (`gd`, `K`, `gf`), sane defaults, spell check |
 | `CHEATSHEET.md` | Key bindings and aliases reference — view with `glow -p CHEATSHEET.md` |
 | `cheatsheets/` | Individual cheatsheets for tmux, vim, zsh, and tools (vim.md includes LSP shortcuts) |
 
-## Vim Language Server (LSP) Setup
+## Neovim Language Server (LSP) Setup
 
-Vim includes **coc.nvim** with LSP support for code navigation and diagnostics.
+Neovim includes **coc.nvim** with LSP support for code navigation and diagnostics.
 
 ### Installation
 
@@ -90,7 +90,7 @@ All tools use **Catppuccin Mocha** for a unified color scheme.
 |-----|-----------------|
 | GNOME Terminal | Install script: `python3 install.py` from [catppuccin/gnome-terminal](https://github.com/catppuccin/gnome-terminal), then select Mocha profile in Preferences |
 | tmux | `catppuccin/tmux` plugin via TPM — install with `prefix + I` |
-| vim | `catppuccin/vim` plugin via vim-plug — install with `:PlugInstall` |
+| neovim | `catppuccin/vim` plugin via vim-plug — auto-installs on first launch |
 | fzf | Color flags set in `FZF_DEFAULT_OPTS` in `.zshrc` |
 | glow | Glamour JSON theme at `~/.config/glow/catppuccin-mocha.json` from [catppuccin/glamour](https://github.com/catppuccin/glamour) |
 | btop | Theme file at `~/.config/btop/themes/catppuccin_mocha.theme` from [catppuccin/btop](https://github.com/catppuccin/btop) |
@@ -140,4 +140,4 @@ git pull
 # Re-run install.sh if new dependencies were added
 ```
 
-`install.sh` symlinks config files into their standard locations (`~/.zshrc`, `~/.tmux.conf`, `~/.vimrc`), pointing them back into this repo. Edits here are live immediately — no copy step needed. Reload with `source ~/.zshrc` or tmux `prefix + r`.
+`install.sh` symlinks config files into their standard locations (`~/.zshrc`, `~/.tmux.conf`, `~/.config/nvim/init.vim`), pointing them back into this repo. Edits here are live immediately — no copy step needed. Reload with `source ~/.zshrc` or tmux `prefix + r`.

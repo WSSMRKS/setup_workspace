@@ -1,6 +1,6 @@
 # setup_workspace — Project Context
 
-Unified developer environment with Zsh, Vim, and tmux using Catppuccin Mocha theme.
+Unified developer environment with Zsh, Neovim, and tmux using Catppuccin Mocha theme.
 
 ## Key Configuration Decisions
 
@@ -24,7 +24,7 @@ Both `Ctrl+Space` and right arrow work now — use whichever feels natural.
 - `zshrc` — Starship prompt, plugins, aliases, functions, keybindings
 - `starship.toml` — Prompt configuration with Catppuccin Mocha
 - `tmux.conf` — Session management, plugins, vim navigation
-- `vimrc` — vim-plug, coc.nvim (LSP), Catppuccin theme
+- `init.vim` — vim-plug, coc.nvim (LSP), Catppuccin theme (symlinked to `~/.config/nvim/init.vim`)
 - `CHEATSHEET.md` — Quick reference (view with `glow -p CHEATSHEET.md`)
 - `cheatsheets/` — Individual guides for tmux, vim, zsh, tools
 

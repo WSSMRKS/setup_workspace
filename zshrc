@@ -15,8 +15,8 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # --- Environment ---
-export EDITOR="vim"
-export VISUAL="vim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
@@ -86,7 +86,8 @@ alias dps="docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'"
 # --- Quick edit ---
 alias ezsh="$EDITOR ~/.zshrc"
 alias etmux="$EDITOR ~/.tmux.conf"
-alias evim="$EDITOR ~/.vimrc"
+alias vim="nvim"
+alias evim="$EDITOR ~/.config/nvim/init.vim"
 alias reload="source ~/.zshrc"
 
 # --- Functions ---

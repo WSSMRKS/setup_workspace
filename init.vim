@@ -1,11 +1,16 @@
 " ============================================
 " Plugins
 " ============================================
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 call plug#end()
+
+" Auto-install missing plugins on first launch, then prompt to restart
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | echo 'Plugins installed — please restart vim'
+\| endif
 
 silent! colorscheme catppuccin_mocha
 
@@ -42,11 +47,11 @@ set wrap linebreak          " soft wrap, don't break words
 
 " Persistent undo (survives vim restarts)
 set undofile
-set undodir=~/.vim/undodir
-silent! call mkdir(expand('~/.vim/undodir'), 'p')
+set undodir=~/.local/share/nvim/undodir
+silent! call mkdir(expand('~/.local/share/nvim/undodir'), 'p')
 
 " Spell files directory
-silent! call mkdir(expand('~/.vim/spell'), 'p')
+silent! call mkdir(expand('~/.local/share/nvim/spell'), 'p')
 
 " ============================================
 " Leader

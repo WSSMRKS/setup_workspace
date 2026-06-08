@@ -21,7 +21,7 @@ fi
 
 # --- Core packages ---
 echo "==> Installing core packages..."
-$PKG_INSTALL zsh vim tmux git curl wget unzip ripgrep fzf || true
+$PKG_INSTALL zsh vim neovim tmux git curl wget unzip ripgrep fzf || true
 
 # fd is named differently across distros
 $PKG_INSTALL fd-find 2>/dev/null || $PKG_INSTALL fd 2>/dev/null || true
@@ -74,6 +74,15 @@ if ! command -v zoxide &>/dev/null; then
   curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 fi
 
+# --- vim-plug (for Neovim) ---
+echo "==> Installing vim-plug..."
+if [ ! -f "$HOME/.local/share/nvim/site/autoload/plug.vim" ]; then
+  curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+else
+  echo "  Already installed, skipping."
+fi
+
 # --- Tmux Plugin Manager ---
 echo "==> Installing TPM..."
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
@@ -95,7 +104,7 @@ curl -fsSLo "$HOME/.config/btop/themes/catppuccin_mocha.theme" \
 
 # --- Symlink dotfiles ---
 echo "==> Symlinking dotfiles..."
-declare -a DOTFILES=(.zshrc .tmux.conf .vimrc)
+declare -a DOTFILES=(.zshrc .tmux.conf)
 
 for file in "${DOTFILES[@]}"; do
   src="$DOTFILES_DIR/${file#.}"
@@ -110,10 +119,29 @@ for file in "${DOTFILES[@]}"; do
   fi
 done
 
+# Neovim config
+mkdir -p "$HOME/.config/nvim"
+ln -sf "$DOTFILES_DIR/init.vim" "$HOME/.config/nvim/init.vim"
+echo "  Linked ~/.config/nvim/init.vim -> $DOTFILES_DIR/init.vim"
+
 # Starship config
 mkdir -p "$HOME/.config"
 ln -sf "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
 echo "  Linked ~/.config/starship.toml -> $DOTFILES_DIR/starship.toml"
+
+# --- GNOME Terminal: bind Ctrl+Alt+T ---
+if command -v gsettings &>/dev/null && command -v gnome-terminal &>/dev/null; then
+  echo "==> Binding Ctrl+Alt+T to gnome-terminal..."
+  gsettings set org.gnome.settings-daemon.plugins.media-keys terminal '[]'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
+    "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ \
+    name 'Terminal'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ \
+    command '/usr/bin/gnome-terminal'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ \
+    binding '<Ctrl><Alt>t'
+fi
 
 # --- Set default shell ---
 if [ "$SHELL" != "$(which zsh)" ]; then

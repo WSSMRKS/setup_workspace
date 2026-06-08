@@ -4,7 +4,7 @@ Quick reference for your terminal toolkit. Pick what you need:
 
 - **[claude](cheatsheets/claude.md)** — Claude Code CLI keybindings and commands
 - **[tmux](cheatsheets/tmux.md)** — session, window, and pane management
-- **[vim](cheatsheets/vim.md)** — navigation, editing, spell check
+- **[nvim](cheatsheets/nvim.md)** — navigation, editing, spell check
 - **[zsh](cheatsheets/zsh.md)** — shell shortcuts, aliases, functions
 - **[tools](cheatsheets/tools.md)** — glow and other utilities
 
@@ -32,15 +32,15 @@ Open **Edit → Preferences → (your profile) → Command** and either:
 
 Oh My Zsh loads automatically. The Starship prompt starts immediately — no configuration wizard needed.
 
-### 4. Install vim plugins
+### 4. Install nvim plugins
 
-Open vim and run:
+Open nvim and run:
 
 ```
 :PlugInstall
 ```
 
-This installs the Catppuccin Mocha theme + coc.nvim (language server). Close and reopen vim after it finishes.
+This installs the Catppuccin Mocha theme + coc.nvim (language server). Close and reopen nvim after it finishes.
 
 ### 4b. Install language servers for coc.nvim (optional but recommended)
 
@@ -65,4 +65,4 @@ Open tmux, then press `Ctrl-a + I` (capital i). This downloads and installs the 
 | zoxide working | `cd` into a few dirs, then try `cd <partial>` |
 | glow installed | `glow CHEATSHEET.md` |
 | Node.js installed | `node --version` → should show v24.x or higher |
-| vim LSP ready | Open a C file, hover over a function with `K` (requires language server installed with `:CocInstall`) |
+| nvim LSP ready | Open a C file, hover over a function with `K` (requires language server installed with `:CocInstall`) |
