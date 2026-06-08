@@ -8,7 +8,8 @@
 | `Ctrl-t` | Fuzzy search files and insert path |
 | `Alt-c` | Fuzzy search directories and cd into one |
 | `Tab` | Autocomplete (press twice for menu) |
-| `→` (right arrow) | Accept autosuggestion |
+| `Ctrl-Space` | Accept autosuggestion |
+| `→` (right arrow) | Accept autosuggestion (alternate) |
 | `Ctrl-l` | Clear screen |
 
 ## Job control (background / foreground)

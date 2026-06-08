@@ -114,3 +114,6 @@ export NVM_DIR="$HOME/.nvm"
 if command -v zoxide &>/dev/null; then
   eval "$(zoxide init zsh --cmd cd)"
 fi
+
+# --- zsh-autosuggestions keybindings ---
+bindkey '^ ' autosuggest-accept  # Ctrl+Space to accept autosuggestion

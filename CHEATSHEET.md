@@ -2,6 +2,7 @@
 
 Quick reference for your terminal toolkit. Pick what you need:
 
+- **[claude](cheatsheets/claude.md)** — Claude Code CLI keybindings and commands
 - **[tmux](cheatsheets/tmux.md)** — session, window, and pane management
 - **[vim](cheatsheets/vim.md)** — navigation, editing, spell check
 - **[zsh](cheatsheets/zsh.md)** — shell shortcuts, aliases, functions
