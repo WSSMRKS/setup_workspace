@@ -44,6 +44,7 @@ set completeopt=menuone,noselect
 set shortmess+=c
 set noshowmode              " status line handles this
 set wrap linebreak          " soft wrap, don't break words
+set formatoptions-=ro       " don't auto-repeat comments
 
 " Persistent undo (survives vim restarts)
 set undofile
