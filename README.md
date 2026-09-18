@@ -25,6 +25,17 @@ chmod +x install_nosudo.sh
 ./install_nosudo.sh
 ```
 
+### Option 3: Headless server (e.g. Raspberry Pi)
+
+Lean, apt-only setup: zsh, tmux, Neovim, ripgrep, fzf, fd plus symlinks. No Oh My Zsh, Starship, Node/nvm, coc.nvim, third-party apt repos or `curl | sh` installers. Neovim uses `init.server.vim` (same keymaps and defaults, no plugins).
+
+```bash
+git clone https://github.com/WSSMRKS/setup_workspace.git ~/setup_workspace
+~/setup_workspace/install_server.sh
+```
+
+Log out and back in, start tmux, press `Ctrl-a + I` for the tmux plugins.
+
 Then follow the first time setup in `CHEATSHEET.md`:
 
 ```bash
@@ -46,6 +57,7 @@ Short version:
 | Script | What it does | Requires sudo |
 |--------|-------------|---------------|
 | `install.sh` | System packages (tmux, neovim, zsh, git), Oh My Zsh plugins, Starship, TPM, theme files | Yes |
+| `install_server.sh` | Lean headless-server setup: apt packages, TPM, symlinks (uses `init.server.vim`) | Yes |
 | `install_nosudo.sh` | User-level tools (neovim, ripgrep, fd, fzf, glow, zoxide, nvm + Node.js v24), symlinks dotfiles, spell files, vim-plug | No |
 
 **Note:** If you don't have sudo, make sure `tmux`, `vim`, `zsh`, and `git` are already installed on your system before running `install_nosudo.sh`. Ask your admin if they're not available.
@@ -57,6 +69,7 @@ Short version:
 | `zshrc` | Starship prompt, autosuggestions, syntax highlighting, fzf, zoxide, nvm, aliases |
 | `starship.toml` | Starship config with Catppuccin Mocha palette |
 | `tmux.conf` | Ctrl-a prefix, vim navigation, resurrect + continuum (session persistence) |
+| `init.server.vim` | Plugin-free variant of `init.vim` for servers |
 | `init.vim` | vim-plug (Catppuccin Mocha + coc.nvim), LSP navigation (`gd`, `K`, `gf`), sane defaults, spell check |
 | `CHEATSHEET.md` | Key bindings and aliases reference — view with `glow -p CHEATSHEET.md` |
 | `cheatsheets/` | Individual cheatsheets for tmux, vim, zsh, and tools (vim.md includes LSP shortcuts) |
