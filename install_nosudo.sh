@@ -12,11 +12,13 @@ echo "    Binaries go to $BIN_DIR"
 # --- Detect architecture ---
 ARCH="$(uname -m)"
 case "$ARCH" in
-  x86_64)   ARCH_RG="x86_64-unknown-linux-musl"
+  x86_64)   ARCH_NVIM="x86_64"
+            ARCH_RG="x86_64-unknown-linux-musl"
             ARCH_FD="x86_64-unknown-linux-musl"
             ARCH_GLOW="Linux_x86_64"
             ;;
-  aarch64)  ARCH_RG="aarch64-unknown-linux-gnu"
+  aarch64)  ARCH_NVIM="arm64"   # neovim names its asset arm64, not aarch64
+            ARCH_RG="aarch64-unknown-linux-gnu"
             ARCH_FD="aarch64-unknown-linux-gnu"
             ARCH_GLOW="Linux_arm64"
             ;;
@@ -47,10 +49,14 @@ gh_latest() {
 
 # --- Neovim ---
 if ! command -v nvim &>/dev/null; then
-  echo "==> Installing Neovim..."
-  VER="$(gh_latest neovim/neovim)"
-  URL="https://github.com/neovim/neovim/releases/download/${VER}/nvim-linux-x86_64.tar.gz"
-  install_bin_from_tar "$URL" "nvim"
+  if [ -z "${ARCH_NVIM:-}" ]; then
+    echo "==> No Neovim build for $ARCH — install it via your package manager."
+  else
+    echo "==> Installing Neovim..."
+    VER="$(gh_latest neovim/neovim)"
+    URL="https://github.com/neovim/neovim/releases/download/${VER}/nvim-linux-${ARCH_NVIM}.tar.gz"
+    install_bin_from_tar "$URL" "nvim"
+  fi
 else
   echo "==> Neovim already installed, skipping."
 fi

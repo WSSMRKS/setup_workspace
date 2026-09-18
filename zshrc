@@ -12,7 +12,8 @@ plugins=(
   tmux
 )
 
-source $ZSH/oh-my-zsh.sh
+# Guarded: server installs (install_server.sh) skip Oh My Zsh
+[[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
 # --- Environment ---
 export EDITOR="nvim"
@@ -102,7 +103,9 @@ psg() { ps aux | grep -v grep | grep -i "$1"; }
 serve() { python3 -m http.server "${1:-8000}"; }
 
 # --- Starship prompt ---
-eval "$(starship init zsh)"
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+fi
 
 # --- Local overrides (machine-specific, not committed) ---
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
