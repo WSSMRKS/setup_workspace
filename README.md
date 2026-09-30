@@ -121,7 +121,7 @@ All tools use **Catppuccin Mocha** for a unified color scheme.
 | `C-h/j/k/l` | Resize panes |
 | `r` | Reload config |
 | `x` | Kill pane |
-| `Enter` | Copy mode (vi keys) |
+| `Enter` | Copy mode (vi keys) — `y` yanks selection to system clipboard |
 
 ### vim (leader: `Space`)
 

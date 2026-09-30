@@ -60,9 +60,13 @@ This is where the screen splitting happens.
 |-----|-------------|
 | `prefix + Enter` | Enter copy mode (lets you scroll up) |
 | `v` | Start selection (in copy mode) |
-| `y` | Yank (copy) selection to clipboard |
+| `y` | Yank (copy) selection to system clipboard |
 | `Escape` | Exit copy mode |
 | Arrow keys / `h/j/k/l` | Scroll and move in copy mode |
+
+Yanked text goes to the **system clipboard** (not just tmux's internal buffer), so you can paste it into the browser or any GUI app with the normal paste shortcut. It tries `wl-copy` (Wayland), then `xclip` (X11), then `pbcopy` (macOS) — whichever is available.
+
+If you edit the clipboard binding in `tmux.conf`, reload with `prefix + r` inside the running session — editing the file alone doesn't affect a session that's already open.
 
 ## Plugins (session persistence)
 
