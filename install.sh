@@ -23,6 +23,14 @@ fi
 echo "==> Installing core packages..."
 $PKG_INSTALL zsh vim neovim tmux git curl wget unzip ripgrep fzf || true
 
+# Clipboard tools for tmux/nvim yank (wl-copy on Wayland, xclip on X11; macOS has pbcopy)
+# and btop. Separate lines so one missing package doesn't abort the core install above.
+if [ "$PKG_INSTALL" != "brew install" ]; then
+  $PKG_INSTALL wl-clipboard || true
+  $PKG_INSTALL xclip || true
+fi
+$PKG_INSTALL btop || true
+
 # fd is named differently across distros
 $PKG_INSTALL fd-find 2>/dev/null || $PKG_INSTALL fd 2>/dev/null || true
 
@@ -129,6 +137,13 @@ mkdir -p "$HOME/.config"
 ln -sf "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
 echo "  Linked ~/.config/starship.toml -> $DOTFILES_DIR/starship.toml"
 
+# --- Install nvim + tmux plugins (needs the symlinked configs above) ---
+echo "==> Installing Neovim plugins..."
+nvim --headless +PlugInstall +qa || echo "  Failed — run :PlugInstall inside nvim"
+
+echo "==> Installing tmux plugins..."
+"$HOME/.tmux/plugins/tpm/bin/install_plugins" || echo "  Failed — press Ctrl-a + I (capital i) inside tmux"
+
 # --- GNOME Terminal: bind Ctrl+Alt+T ---
 if command -v gsettings &>/dev/null && command -v gnome-terminal &>/dev/null; then
   echo "==> Binding Ctrl+Alt+T to gnome-terminal..."
@@ -154,5 +169,4 @@ echo "==> Done! Next steps:"
 echo "  1. Open a new terminal or run: exec zsh"
 echo "  2. In GNOME Terminal: Preferences → select 'Catppuccin Mocha' profile"
 echo "     (run the catppuccin/gnome-terminal install script first if not done)"
-echo "  3. In vim, run :PlugInstall to install the Catppuccin theme"
-echo "  4. In tmux, press Ctrl-a + I to install tmux plugins"
+echo "  3. If tmux was already running, reload it: tmux source ~/.tmux.conf"

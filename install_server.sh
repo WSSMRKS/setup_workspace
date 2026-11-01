@@ -6,7 +6,7 @@
 #   no Oh My Zsh, Starship, zoxide, nvm/Node, coc.nvim, glow,
 #   no third-party apt repositories, no curl|sh installers.
 # The one network fetch besides apt: TPM (tmux plugin manager) via git,
-# so tmux-resurrect/continuum work. Plugins install on prefix + I.
+# so tmux-resurrect/continuum work. Plugins are installed at the end.
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -50,6 +50,9 @@ link "$DOTFILES_DIR/zshrc"           "$HOME/.zshrc"
 link "$DOTFILES_DIR/tmux.conf"       "$HOME/.tmux.conf"
 link "$DOTFILES_DIR/init.server.vim" "$HOME/.config/nvim/init.vim"
 
+echo "==> Installing tmux plugins..."
+"$HOME/.tmux/plugins/tpm/bin/install_plugins" || echo "  Failed — press Ctrl-a + I (capital i) inside tmux"
+
 if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$(command -v zsh)" ]; then
   echo "==> Setting zsh as default shell..."
   chsh -s "$(command -v zsh)" || echo "  Run manually: chsh -s $(command -v zsh)"
@@ -58,4 +61,4 @@ fi
 echo ""
 echo "==> Done. Next:"
 echo "  1. Log out and back in (zsh becomes the login shell)"
-echo "  2. Start tmux, press Ctrl-a + I to install tmux plugins"
+echo "  2. If tmux was already running, reload it: tmux source ~/.tmux.conf"

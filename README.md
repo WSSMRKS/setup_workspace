@@ -34,7 +34,7 @@ git clone https://github.com/WSSMRKS/setup_workspace.git ~/setup_workspace
 ~/setup_workspace/install_server.sh
 ```
 
-Log out and back in, start tmux, press `Ctrl-a + I` for the tmux plugins.
+Log out and back in. tmux plugins are installed by the script.
 
 Then follow the first time setup in `CHEATSHEET.md`:
 
@@ -46,9 +46,10 @@ Short version:
 1. `chsh -s $(which zsh)` — set zsh as default shell
 2. In GNOME Terminal: **Preferences → select Catppuccin Mocha profile → set as default**
 3. Open a new terminal — Starship prompt loads automatically and nvm initializes
-4. Open nvim — plugins auto-install on first launch (or run `:PlugInstall` manually)
-5. In nvim, run `:CocInstall coc-clangd` for C/C++ language server support
-6. Open tmux and press `Ctrl-a + I` to install plugins
+4. In nvim, run `:CocInstall coc-clangd` for C/C++ language server support
+5. If tmux was running during the install, reload it: `tmux source ~/.tmux.conf`
+
+The install scripts install the nvim plugins (`:PlugInstall`) and tmux plugins (TPM) automatically — no manual step needed.
 
 ## What's included
 
@@ -56,11 +57,13 @@ Short version:
 
 | Script | What it does | Requires sudo |
 |--------|-------------|---------------|
-| `install.sh` | System packages (tmux, neovim, zsh, git), Oh My Zsh plugins, Starship, TPM, theme files | Yes |
-| `install_server.sh` | Lean headless-server setup: apt packages, TPM, symlinks (uses `init.server.vim`) | Yes |
-| `install_nosudo.sh` | User-level tools (neovim, ripgrep, fd, fzf, glow, zoxide, nvm + Node.js v24), symlinks dotfiles, spell files, vim-plug | No |
+| `install.sh` | System packages (tmux, neovim, zsh, git, btop, clipboard tools `wl-clipboard` + `xclip`), Oh My Zsh plugins, Starship, TPM, theme files, nvim + tmux plugins | Yes |
+| `install_server.sh` | Lean headless-server setup: apt packages, TPM + tmux plugins, symlinks (uses `init.server.vim`) | Yes |
+| `install_nosudo.sh` | User-level tools (neovim, ripgrep, fd, fzf, glow, zoxide, nvm + Node.js v24), symlinks dotfiles, spell files, vim-plug, nvim + tmux plugins | No |
 
-**Note:** If you don't have sudo, make sure `tmux`, `vim`, `zsh`, and `git` are already installed on your system before running `install_nosudo.sh`. Ask your admin if they're not available.
+**Note:** If you don't have sudo, make sure `tmux`, `vim`, `zsh`, and `git` are already installed on your system before running `install_nosudo.sh`. Ask your admin if they're not available. For the system clipboard you'll also need `wl-clipboard` (Wayland) or `xclip` (X11) — the script warns if both are missing.
+
+**Not installed by any script:** `norminette`, `valgrind`, `docker`. Install them yourself if you use the matching aliases (`norm`, `val`, `dc*`, `dps`).
 
 ### Config files
 
@@ -102,7 +105,7 @@ All tools use **Catppuccin Mocha** for a unified color scheme.
 | App | How it's applied |
 |-----|-----------------|
 | GNOME Terminal | Install script: `python3 install.py` from [catppuccin/gnome-terminal](https://github.com/catppuccin/gnome-terminal), then select Mocha profile in Preferences |
-| tmux | `catppuccin/tmux` plugin via TPM — install with `prefix + I` |
+| tmux | `catppuccin/tmux` plugin via TPM — installed by the install scripts (manually: `prefix + I`) |
 | neovim | `catppuccin/vim` plugin via vim-plug — auto-installs on first launch |
 | fzf | Color flags set in `FZF_DEFAULT_OPTS` in `.zshrc` |
 | glow | Glamour JSON theme at `~/.config/glow/catppuccin-mocha.json` from [catppuccin/glamour](https://github.com/catppuccin/glamour) |
@@ -121,7 +124,10 @@ All tools use **Catppuccin Mocha** for a unified color scheme.
 | `C-h/j/k/l` | Resize panes |
 | `r` | Reload config |
 | `x` | Kill pane |
-| `Enter` | Copy mode (vi keys) — `y` yanks selection to system clipboard |
+| `Enter` | Copy mode (vi keys) — `v` select, `y` yank selection, `Y` yank current line (to system clipboard) |
+| `]` | Paste tmux buffer (system clipboard: `Ctrl+Shift+V`) |
+| *(mouse)* | Drag = copy to clipboard, highlight clears on release. **`Shift` + drag = terminal's own selection** (`Ctrl+Shift+C`), works even if `wl-copy` is broken |
+| `I` | Install plugins (capital i) |
 
 ### vim (leader: `Space`)
 
@@ -140,6 +146,16 @@ All tools use **Catppuccin Mocha** for a unified color scheme.
 | `K` | Show function signature / hover docs |
 | `<leader>o` | Show outline |
 | `<leader>cn/cp` | Next/prev diagnostic |
+
+## Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| nvim has no colors / coc not loaded | Plugins missing: `nvim +PlugInstall +qa` |
+| tmux plugins missing, `prefix + I` does nothing | It's capital `I`. If still nothing, the running server predates TPM: `tmux source ~/.tmux.conf`. Or install from the shell: `~/.tmux/plugins/tpm/bin/install_plugins` |
+| Mouse highlight in tmux disappears on release / can't copy with the mouse | Expected: tmux mouse mode copies on release (via `wl-copy`) and exits copy mode. **Hold `Shift` while dragging** to use the terminal's own selection, then `Ctrl+Shift+C`. Works even when `wl-copy` doesn't |
+| `y` in tmux copy mode copies nothing | `y` needs a selection (`v` or `V` first). Use `Y` to yank the current line |
+| Yank doesn't reach the system clipboard | Install `wl-clipboard` (Wayland) or `xclip` (X11). Test: `echo hello \| wl-copy && wl-paste`. In nvim: `:checkhealth provider`. Reload tmux after config changes (`prefix + r`) |
 
 ## Machine-specific overrides
 

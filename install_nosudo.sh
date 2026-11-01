@@ -211,6 +211,21 @@ mkdir -p "$HOME/.config/btop/themes"
 curl -fsSLo "$HOME/.config/btop/themes/catppuccin_mocha.theme" \
   https://raw.githubusercontent.com/catppuccin/btop/main/themes/catppuccin_mocha.theme
 
+# --- Install nvim + tmux plugins (needs the symlinked configs above) ---
+# nvim may have just landed in ~/.local/bin, which isn't on PATH yet
+NVIM_BIN="$(command -v nvim || echo "$BIN_DIR/nvim")"
+echo "==> Installing Neovim plugins..."
+"$NVIM_BIN" --headless +PlugInstall +qa || echo "  Failed — run :PlugInstall inside nvim"
+
+echo "==> Installing tmux plugins..."
+"$HOME/.tmux/plugins/tpm/bin/install_plugins" || echo "  Failed — press Ctrl-a + I (capital i) inside tmux"
+
+# --- Clipboard tools can't be installed without sudo — just warn ---
+if ! command -v wl-copy &>/dev/null && ! command -v xclip &>/dev/null; then
+  echo "==> WARNING: neither wl-copy nor xclip found — tmux/nvim yank won't reach the system clipboard."
+  echo "    Ask your admin for 'wl-clipboard' (Wayland) or 'xclip' (X11)."
+fi
+
 # --- GNOME Terminal: bind Ctrl+Alt+T ---
 if command -v gsettings &>/dev/null && command -v gnome-terminal &>/dev/null; then
   echo "==> Binding Ctrl+Alt+T to gnome-terminal..."
@@ -257,9 +272,8 @@ echo "  1. Start zsh:  exec zsh   (or open a new terminal)"
 echo "     (chsh skipped — no sudo. To make zsh default permanently, ask your admin.)"
 echo "  2. In GNOME Terminal: Preferences → select 'Catppuccin Mocha' profile → set as default"
 echo "     (run the catppuccin/gnome-terminal install script first if not done)"
-echo "  3. In vim, run :PlugInstall to install plugins (Catppuccin + coc.nvim)"
-echo "  4. In vim, run :CocInstall coc-clangd for C/C++ support"
-echo "  5. In tmux, press Ctrl-a + I to install tmux plugins"
+echo "  3. In vim, run :CocInstall coc-clangd for C/C++ support"
+echo "  4. If tmux was already running, reload it: tmux source ~/.tmux.conf"
 echo ""
 echo "View cheatsheets:"
 echo "  glow -p CHEATSHEET.md     # Quick reference"
